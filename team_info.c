@@ -4,24 +4,16 @@ int main(void)
     int n;
     scanf("%d",&n);
 
-    char str1[35];
-    char str2[15];
-    int c,d,e,f;
-    for(int cnt = 1;cnt <= n;cnt++)
+    char name[35];
+    char city[15];
+    char date[20];
+    int flag;
+    for(int i = 1;i <= n;i++)
     {
-        scanf("%s %s %d-%d-%d %d",str1,str2,&c,&d,&e,&f);
-        if(f == 1 && d < 10 && e < 10)
+        scanf("%s %s %s %d",name,city,date,&flag);
+        if(flag == 1)
         {
-            printf("gdut_%s %s %d-0%d-0%d\n",str1,str2,c,d,e,f);
-        }else if(f == 1 && d >= 10 && e < 10)
-        {
-            printf("gdut_%s %s %d-%d-0%d\n",str1,str2,c,d,e,f);
-        }else if(f == 1 && d < 10 && e >= 10)
-        {
-            printf("gdut_%s %s %d-0%d-%d\n",str1,str2,c,d,e,f);
-        }else if(f == 1 && d >= 10 && e >= 10)
-        {
-            printf("gdut_%s %s %d-0%d-0%d\n",str1,str2,c,d,e,f);
+            printf("gdut_%s %s %s\n",name,city,date);
         }
     }
     return 0;
