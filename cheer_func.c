@@ -7,7 +7,8 @@ void cheer(int i)
 
 int main()
 {
-    cheer(2);
+    double f = 2;
+    cheer(f);
 
     return 0;
 }
