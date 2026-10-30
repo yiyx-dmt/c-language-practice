@@ -1,8 +1,9 @@
 #include<stdio.h>
+#define number 10   //与const那句意义相同
 
 int main()
 {
-    const int number = 10;    //10多次出现，是magic number
+    //const int number = 10;    //10多次出现，是magic number
     int x;
     int count[10] = {0};
     int i;
