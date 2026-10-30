@@ -2,11 +2,12 @@
 
 int main()
 {
+    const int number = 10;    //10多次出现，是magic number
     int x;
     int count[10];
     int i;
 
-    for(i = 0;i < 10;i++){
+    for(i = 0;i < number;i++){
         count[i] = 0;
     }
     scanf("%d",&x);
@@ -16,7 +17,7 @@ int main()
         }
         scanf("%d",&x);
     }
-    for(i = 0;i < 10;i++){
+    for(i = 0;i < number;i++){
         printf("%d:%d\n",i,count[i]);
     }
     return 0;
