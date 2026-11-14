@@ -56,8 +56,14 @@ void DeleteVehicle();
 void DeleteRental();
 
 void Search();
+void SearchRenter();
+void SearchVehicle();
+void SearchRental();
 
 void Statistics();
+void StatisticsRenter();
+void StatisticsVehicle();
+void StatisticsRental();
 
 int main()
 {
@@ -331,7 +337,7 @@ void DeleteRenter()
     printf("1按编号删除,2按姓名删除,请输入数字:\n");
     scanf("%d",&choice);
     if(choice == 1){
-        printf("请输入要删除的租车登记信息记录表编号:");
+        printf("请输入要删除的租车人信息记录表编号:");
         scanf("%d",&number);
         for(i = 0; i<rentercnt && flag;i++){
             if(RenterList[i].num1 == number){
@@ -375,8 +381,8 @@ void DeleteVehicle()
     scanf("%s",p);
     for(i = 0; i<vehiclecnt && flag;i++){
         if(strcmp(VehicleList[i].plate,p) == 0){
-            printf("将删除以下租车登记信息:\n");
-            printf("车牌号码:%s 车辆品牌:%s 车辆类型:%s 车身颜色:%s 核载人数:%d 租借状态:%c\n",VehicleList[i].plate, VehicleList[i].brand, VehicleList[i].type,VehicleList[i].seats, VehicleList[i].isRented);
+            printf("将删除以下车辆信息:\n");
+            printf("车牌号码:%s 车辆品牌:%s 车辆类型:%s 车身颜色:%s 核载人数:%d 租借状态:%c\n",VehicleList[i].plate, VehicleList[i].brand, VehicleList[i].type,VehicleList[i].color,VehicleList[i].seats, VehicleList[i].isRented);
             for(j = i;j <vehiclecnt - 1;j++){
                 VehicleList[j] = VehicleList[j+1];
             }
@@ -405,7 +411,7 @@ void DeleteRental()
         for(i = 0; i<rentalcnt && flag;i++){
             if(RentalList[i].num2 == number){
                 printf("将删除以下租车登记信息:\n");
-                printf("登记号:%d 姓名:%s 电话:%s 车牌号码:%s 借车日期:%s 还车日期:%s 违约情况:%s\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
+                printf("登记号:%d 姓名:%s 电话:%s 车牌号码:%s 借车日期:%s 还车日期:%s 违约情况:%c\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
                 for(j = i;j <rentalcnt - 1;j++){
                     RentalList[j] = RentalList[j+1];
                 }
@@ -416,15 +422,15 @@ void DeleteRental()
     }else if(choice == 2){
         printf("请输入要删除的租车登记信息记录表姓名:\n");
         scanf("%s",n);
-        for(i = 0; i<rentercnt && flag;i++){
-            if(strcmp(RenterList[i].name,n) == 0){
+        for(i = 0; i<rentalcnt && flag;i++){
+            if(strcmp(RentalList[i].name,n) == 0){
                 printf("将删除以下租车登记信息:\n");
-                printf("登记号:%d 姓名:%s 电话:%s 车牌号码:%s 借车日期:%s 还车日期:%s 违约情况:%s\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
-                for(j = i;j <rentercnt - 1;j++){
-                    RenterList[j] = RenterList[j+1];
+                printf("登记号:%d 姓名:%s 电话:%s 车牌号码:%s 借车日期:%s 还车日期:%s 违约情况:%c\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
+                for(j = i;j <rentalcnt - 1;j++){
+                    RentalList[j] = RentalList[j+1];
                 }
                 flag = 0;
-                rentercnt--;
+                rentalcnt--;
             }
         }
     }
@@ -432,5 +438,121 @@ void DeleteRental()
         printf("删除成功!\n");
     }else{
         printf("没有查询到可以删除的数据!\n");
+    }
+}
+
+//============ 查询记录 ============
+void Search()
+{
+    int choice;
+    do{
+        printf("\n");
+        printf("===============查询================\n");
+        printf("1---租车人信息记录表(RenterList)\n");
+        printf("2---车辆信息记录表(VehicleList)\n");
+        printf("3---租车登记信息记录表(RentalList)\n");
+        printf("4---返回(Return)\n");
+        printf("==================================\n");
+        printf("请选择您想查询的记录表:\n");
+        scanf("%d",&choice);
+        switch(choice)
+        {
+            case 1 :SearchRenter();
+                    break;
+            case 2 :SearchVehicle();
+                    break;
+            case 3 :SearchRental();
+                    break;
+            case 4 :break;
+            default:printf("选择错误!请重选");break;
+        }
+    } while(choice != 4);
+}
+
+// ============ 查询租车人信息 ============
+void SearchRenter()
+{
+    int i,found=0;         //防止同名同姓
+    char n[20];
+    printf("请输入要查询的租车人信息记录表姓名:\n");
+    scanf("%s",n);
+    for(i = 0; i < rentercnt;i++){
+        if(strcmp(RenterList[i].name,n) == 0){
+            printf("编号:%d\n姓名:%s\n性别:%c\n年龄:%d\n职业:%s\n电话:%s\n身份证:%s\n地址:%s\n",RenterList[i].num1, RenterList[i].name, RenterList[i].sex,RenterList[i].age, RenterList[i].job, RenterList[i].phone,RenterList[i].id,RenterList[i].addr);
+            found++;
+        }
+    }
+    if(found != 0){
+        printf("查询成功!\n");
+    }else{
+        printf("没有查询到!\n");
+    }
+}
+
+// ============ 查询车辆信息 ============
+void SearchVehicle()
+{
+    int i,choice,found=0;
+    char b[20];
+    char r;
+    printf("1按车辆品牌查询,2按租借状态查询,请输入数字:\n");
+    scanf("%d",&choice);
+    if(choice == 1){
+        printf("请输入要查询的车辆信息记录表品牌:\n");
+        scanf("%s",b);
+        for(i = 0; i < vehiclecnt;i++){
+            if(strcmp(VehicleList[i].brand,b) == 0){
+                printf("车牌号码:%s\n车辆品牌:%s\n车辆类型:%s\n车身颜色:%s\n核载人数:%d\n租借状态:%c\n",VehicleList[i].plate, VehicleList[i].brand, VehicleList[i].type,VehicleList[i].color,VehicleList[i].seats, VehicleList[i].isRented);
+                found++;
+            }
+        }
+    }else if(choice == 2){
+        printf("请输入要查询的车辆信息记录表租借状态(Y/N):\n");
+        scanf(" %c",&r);
+        for(i = 0; i < vehiclecnt;i++){
+            if(VehicleList[i].isRented == r){
+                printf("车牌号码:%s\n车辆品牌:%s\n车辆类型:%s\n车身颜色:%s\n核载人数:%d\n租借状态:%c\n",VehicleList[i].plate, VehicleList[i].brand, VehicleList[i].type,VehicleList[i].color,VehicleList[i].seats, VehicleList[i].isRented);
+                found++;
+            }
+        }
+    }
+    if(found != 0){
+        printf("查询成功!\n");
+    }else{
+        printf("没有查询到!\n");
+    }
+}
+
+// ============查询租车登记信息 ============
+void SearchRental()
+{
+    int i,choice,found=0;        //防止同名同姓
+    char n[20];
+    char p[20];
+    printf("1按车牌号码查询,2按姓名查询,请输入数字:\n");
+    scanf("%d",&choice);
+    if(choice == 1){
+        printf("请输入要查询的租车登记信息记录表车牌号码:\n");
+        scanf("%s",p);
+        for(i = 0; i < rentalcnt;i++){
+            if(strcmp(RentalList[i].plate,p) == 0){
+                printf("登记号:%d\n姓名:%s\n电话:%s\n车牌号码:%s\n借车日期:%s\n还车日期:%s\n违约情况:%c\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
+                found++;
+            }
+        }
+    }else if(choice == 2){
+        printf("请输入要查询的租车登记信息记录表姓名:\n");
+        scanf("%s",n);
+        for(i = 0; i < rentalcnt;i++){
+            if(strcmp(RentalList[i].name,n) == 0){
+                printf("登记号:%d\n姓名:%s\n电话:%s\n车牌号码:%s\n借车日期:%s\n还车日期:%s\n违约情况:%c\n",RentalList[i].num2, RentalList[i].name, RentalList[i].phone,RentalList[i].plate, RentalList[i].borrow_date, RentalList[i].return_date,RentalList[i].isViolated);
+                found++;
+            }
+        }
+    }
+    if(found != 0){
+        printf("查询成功!\n");
+    }else{
+        printf("没有查询到!\n");
     }
 }
