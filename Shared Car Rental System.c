@@ -238,8 +238,13 @@ void UpdateRenter()
             scanf("%d",&RenterList[i].age);
             printf("请输入职业:\n");    
             scanf("%s",RenterList[i].job);
-            printf("请输入电话:\n");    
+            do{
+            printf("请输入电话:\n");
             scanf("%s",RenterList[i].phone);
+            if(checkPhone(RenterList[i].phone) == 0){
+                printf("电话必须是11位数字,请重新输入!\n");
+            }
+        }while(checkPhone(RenterList[i].phone) == 0);
             printf("请输入身份证号:\n");
             scanf("%s",RenterList[i].id);
             printf("请输入居住地址:\n");    
@@ -293,8 +298,13 @@ void UpdateRental()
         if(RentalList[i].num2 == number){
             printf("请输入姓名:\n");    
             scanf("%s",RentalList[i].name);
-            printf("请输入电话:\n");    
+            do{
+            printf("请输入电话:\n");
             scanf("%s",RentalList[i].phone);
+            if(checkPhone(RentalList[i].phone) == 0){
+                printf("电话必须是11位数字,请重新输入!\n");
+            }
+        }while(checkPhone(RentalList[i].phone) == 0);
             printf("请输入车牌号码:\n");    
             scanf("%s",RentalList[i].plate);
             printf("请输入借车日期:\n");    
