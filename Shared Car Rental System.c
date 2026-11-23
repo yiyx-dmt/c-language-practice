@@ -66,9 +66,13 @@ void StatisticsViolationCnt();     //统计某人违约次数
 
 int checkPhone(char p[]);          //保证电话号码由11位数字组成
 
+void LoadData();                   //启动时读文件
+void SaveData();                   //退出前写文件
+
 int main()
 {
     int i;
+    LoadData();
     do{
         printf("\n");
         printf("=====Shared Car Rental System=====\n");
@@ -97,6 +101,7 @@ int main()
             default:printf("选择错误!请重选。\n");break;
         }
     } while(i != 6);
+    SaveData();
     return 0;
 }
 
@@ -643,6 +648,7 @@ void StatisticsViolationCnt()
     }
 }
 
+//============ 确认11位电话号码 ============
 int checkPhone(char p[])
 {
     int i;
@@ -657,5 +663,46 @@ int checkPhone(char p[])
     return 1;
 }
 
-//下次回来完成文件的读写，有时间就把数组改成链表
+//============ 写文件 ============
+void SaveData()
+{
+    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt", "wb");
+    if(fp == NULL){
+        printf("\ncannot open file\n");
+        return;
+    }
+    fwrite(&rentercnt,sizeof(int),1,fp);
+    fwrite(RenterList,sizeof(struct Renter),rentercnt,fp);
+
+    fwrite(&vehiclecnt,sizeof(int),1,fp);
+    fwrite(VehicleList,sizeof(struct Vehicle),vehiclecnt,fp);
+
+    fwrite(&rentalcnt,sizeof(int),1,fp);
+    fwrite(RentalList,sizeof(struct Rental),rentalcnt,fp);
+
+    fclose(fp);
+    printf("数据已保存。\n");
+}
+
+//============ 读文件 ============
+void LoadData()
+{
+    FILE *fp = fopen("renter.txt","rb");
+    if(fp != NULL){
+            return;
+    }
+    fread(&rentercnt,sizeof(int),1,fp);
+    fread(RenterList,sizeof(struct Renter),rentercnt,fp);
+
+    fread(&vehiclecnt,sizeof(int),1,fp);
+    fread(VehicleList,sizeof(struct Vehicle),vehiclecnt,fp);
+
+    fread(&rentalcnt,sizeof(int),1,fp);
+    fread(RentalList,sizeof(struct Rental),rentalcnt,fp);
+
+    fclose(fp);
+    printf("数据读取完成。\n");
+}
+
+
 //完善所有功能，避免bug，考虑增加时间系统
