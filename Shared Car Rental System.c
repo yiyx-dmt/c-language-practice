@@ -46,27 +46,27 @@ struct Renter  *renterHead  = NULL;     //三个头指针
 struct Vehicle *vehicleHead = NULL;
 struct Rental  *rentalHead  = NULL;
 
-void Insert();
+void Insert();                     //增加记录
 void InsertRenter();
 void InsertVehicle();
 void InsertRental();
 
-void Update();
+void Update();                     //修改记录
 void UpdateRenter();
 void UpdateVehicle();
 void UpdateRental();
 
-void Delete();
+void Delete();                     //删除记录
 void DeleteRenter();
 void DeleteVehicle();
 void DeleteRental();
 
-void Search();
+void Search();                     //查询记录
 void SearchRenter();
 void SearchVehicle();
 void SearchRental();
 
-void Statistics();
+void Statistics();                 //统计记录
 void StatisticsRentalCnt();        //统计某人租车次数
 void StatisticsViolationCnt();     //统计某人违约次数
 
@@ -74,7 +74,7 @@ int checkPhone(char p[]);          //保证电话号码由11位数字组成
 
 void LoadData();                   //启动时读文件
 void SaveData();                   //退出前写文件
-
+void Backupdata();                 //备份文件
 int main()
 {
     int i;
@@ -87,7 +87,8 @@ int main()
         printf("3---删除(Delete)\n");
         printf("4---查询(Search)\n");
         printf("5---统计(Statistics)\n");
-        printf("6---退出(Exit)\n");
+        printf("6---备份(Backup)\n");
+        printf("7---退出(Exit)\n");
         printf("==================================\n");
         printf("请输入数字:\n");
         scanf("%d",&i);
@@ -103,10 +104,12 @@ int main()
                     break;
             case 5 :Statistics();
                     break;
-            case 6 :break;
+            case 6 :Backupdata();
+                    break;
+            case 7 :break;
             default:printf("选择错误!请重选。\n");break;
         }
-    } while(i != 6);
+    } while(i != 7);
     SaveData();
     return 0;
 }
@@ -706,17 +709,20 @@ void StatisticsRentalCnt()
 void StatisticsViolationCnt()
 {
     char n[20];
-    int cnt=0;
+    int cnt=0,found=0;
     struct Rental *p = rentalHead;
     printf("请输入要查询的姓名:");
     scanf("%s",n);
     while(p != NULL){
-        if(strcmp(p->name,n) == 0 &&  p->isViolated == 'Y'){
-            cnt++;
+        if(strcmp(p->name,n) == 0){
+            found++;
+            if(p->isViolated == 'Y'){
+                cnt++;
+            }
         }
         p = p->next;
     }
-    if(cnt == 0){
+    if(found == 0){
         printf("未查找到该用户的租车记录。\n");
     }else{
         printf("%s的违约次数:%d\n",n,cnt);
@@ -741,7 +747,7 @@ int checkPhone(char p[])
 //============ 写文件 ============
 void SaveData()
 {
-    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt", "wb");   //输出数据，打开一个二进制文件
+    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt","wb");   //输出数据，打开一个二进制文件
     struct Renter  *rp;        //租车人信息
     struct Vehicle *vp;        //车辆信息
     struct Rental  *tp;        //租车信息
@@ -771,7 +777,7 @@ void SaveData()
 //============ 读文件 ============
 void LoadData()
 {
-    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt", "rb");   //输入数据，打开一个二进制文件
+    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt","rb");   //输入数据，打开一个二进制文件
     struct Renter  *rp, *rtail;
     struct Vehicle *vp, *vtail;
     struct Rental  *tp, *ttail;
@@ -824,3 +830,69 @@ void LoadData()
     fclose(fp);
     printf("数据读取完成。\n");
 }
+
+//============ 备份文件 ============
+void Backupdata()
+{
+    SaveData();
+
+    FILE *fp1 = fopen("/Users/yida/Desktop/ARecord.txt","rb");
+    FILE *fp2 = fopen("/Users/yida/Desktop/backup.txt","wb");
+    char buf[1024];
+    int n;
+
+    if(fp1 == NULL){
+        printf("无法打开 ARecord.txt!\n");
+        return;
+    }
+    if(fp2 == NULL){
+        printf("无法打开 backup.txt!\n");
+        fclose(fp1);
+        return;
+    }
+
+    while((n = fread(buf,1,sizeof(buf),fp1)) > 0){
+        fwrite(buf, 1, n, fp2);
+    }
+
+    fclose(fp1);
+    fclose(fp2);
+    printf("备份成功!\n");
+}
+
+/*
+测试数据（够题目的 ≥5人/5车/10条）
+
+租车人 6 条（编号 姓名 性别 年龄 职业 电话 身份证号 地址）：
+
+1  张三  M  25  程序员  13800138001  440100199901011234  广州市天河区
+2  李四  M  30  教师    13800138002  440100199401011235  广州市越秀区
+3  王五  F  28  医生    13800138003  440100199601011236  广州市海珠区
+4  赵六  M  35  司机    13800138004  440100198901011237  广州市白云区
+5  孙七  F  22  学生    13800138005  440100200201011238  广州市番禺区
+6  周八  M  40  工程师  13800138006  440100198401011239  广州市黄埔区
+
+车辆 6 条（车牌 品牌 类型 颜色 核载 状态）：
+
+1  粤A12345  比亚迪  轿车    白色  5  N
+2  粤A12346  丰田    SUV    黑色  7  N
+3  粤A12347  本田    轿车    银色  5  Y
+4  粤A12348  大众    商务车  蓝色  7  N
+5  粤A12349  特斯拉  轿车    红色  5  N
+6  粤A12350  吉利    轿车    灰色  5  N
+
+租车登记 12 条（登记号 姓名 电话 车牌 借车日期 还车日期 违约）：
+
+1   张三  13800138001  粤A12345  2026-11-01  2026-11-05  N
+2   李四  13800138002  粤A12346  2026-11-02  2026-11-07  N
+3   王五  13800138003  粤A12347  2026-11-03  2026-11-09  Y
+4   张三  13800138001  粤A12348  2026-11-04  2026-11-10  N
+5   赵六  13800138004  粤A12349  2026-11-05  2026-11-12  N
+6   孙七  13800138005  粤A12345  2026-11-06  2026-11-13  N
+7   张三  13800138001  粤A12346  2026-11-07  2026-11-15  Y
+8   周八  13800138006  粤A12347  2026-11-08  2026-11-16  N
+9   李四  13800138002  粤A12349  2026-11-09  2026-11-17  N
+10  王五  13800138003  粤A12348  2026-11-10  2026-11-18  Y
+11  赵六  13800138004  粤A12346  2026-11-11  2026-11-19  N
+12  孙七  13800138005  粤A12347  2026-11-12  2026-11-20  N
+*/
