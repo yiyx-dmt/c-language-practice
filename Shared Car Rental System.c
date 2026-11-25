@@ -298,6 +298,7 @@ void UpdateRenter()
             scanf("%s",p->id);
             printf("请输入居住地址:\n");    
             scanf("%s",p->addr);
+            printf("修改成功!\n");
             return;
         }
         p = p->next;
@@ -325,6 +326,7 @@ void UpdateVehicle()
             scanf("%d",&p->seats);
             printf("请输入租借状态:\n");
             scanf(" %c",&p->isRented);
+            printf("修改成功!\n");
             return;
         }
         p = p->next;
@@ -359,6 +361,7 @@ void UpdateRental()
             scanf("%s",p->return_date);
             printf("请输入违约情况:\n");
             scanf(" %c",&p->isViolated);
+            printf("修改成功!\n");
             return;
         }
         p = p->next;
@@ -574,6 +577,7 @@ void SearchRenter()
     while(p != NULL){               //可能出现同名同姓
         if(strcmp(p->name,n) == 0){
             printf("编号:%d\n姓名:%s\n性别:%c\n年龄:%d\n职业:%s\n电话:%s\n身份证:%s\n地址:%s\n",p->num1,p->name,p->sex,p->age,p->job,p->phone,p->id,p->addr);
+            printf("\n");
             found++;
         }
         p = p->next;
@@ -600,6 +604,7 @@ void SearchVehicle()
         while(p != NULL){
             if(strcmp(p->brand,b) == 0){
                 printf("车牌号码:%s\n车辆品牌:%s\n车辆类型:%s\n车身颜色:%s\n核载人数:%d\n租借状态:%c\n",p->plate,p->brand,p->type,p->color,p->seats,p->isRented);
+                printf("\n");
                 found++;
             }
             p = p->next;
@@ -610,6 +615,7 @@ void SearchVehicle()
         while(p != NULL){
             if(p->isRented == r){
                 printf("车牌号码:%s\n车辆品牌:%s\n车辆类型:%s\n车身颜色:%s\n核载人数:%d\n租借状态:%c\n",p->plate,p->brand,p->type,p->color,p->seats,p->isRented);
+                printf("\n");
                 found++;
             }
             p = p->next;
@@ -637,6 +643,7 @@ void SearchRental()
         while(p != NULL){
             if(strcmp(p->plate,plate) == 0){
                 printf("登记号:%d\n姓名:%s\n电话:%s\n车牌号码:%s\n借车日期:%s\n还车日期:%s\n违约情况:%c\n",p->num2,p->name,p->phone,p->plate,p->borrow_date,p->return_date,p->isViolated);
+                printf("\n");
                 found++;
             }
             p = p->next;
@@ -647,6 +654,7 @@ void SearchRental()
         while(p != NULL){               //可能出现同名同姓
             if(strcmp(p->name,n) == 0){
                 printf("登记号:%d\n姓名:%s\n电话:%s\n车牌号码:%s\n借车日期:%s\n还车日期:%s\n违约情况:%c\n",p->num2,p->name,p->phone,p->plate,p->borrow_date,p->return_date,p->isViolated);
+                printf("\n");
                 found++;
             }
             p = p->next;
