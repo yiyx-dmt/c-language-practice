@@ -78,6 +78,7 @@ void Backupdata();                 //备份文件
 int main()
 {
     int i;
+    system("chcp 65001");
     LoadData();
     do{
         printf("\n");
@@ -755,7 +756,7 @@ int checkPhone(char p[])
 //============ 写文件 ============
 void SaveData()
 {
-    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt","wb");   //输出数据，打开一个二进制文件
+    FILE *fp = fopen("ARecord.txt","wb");   //输出数据，打开一个二进制文件
     struct Renter  *rp;        //租车人信息
     struct Vehicle *vp;        //车辆信息
     struct Rental  *tp;        //租车信息
@@ -785,7 +786,7 @@ void SaveData()
 //============ 读文件 ============
 void LoadData()
 {
-    FILE *fp = fopen("/Users/yida/Desktop/ARecord.txt","rb");   //输入数据，打开一个二进制文件
+    FILE *fp = fopen("ARecord.txt","rb");   //输入数据，打开一个二进制文件
     struct Renter  *rp, *rtail;
     struct Vehicle *vp, *vtail;
     struct Rental  *tp, *ttail;
@@ -844,8 +845,8 @@ void Backupdata()
 {
     SaveData();
 
-    FILE *fp1 = fopen("/Users/yida/Desktop/ARecord.txt","rb");
-    FILE *fp2 = fopen("/Users/yida/Desktop/backup.txt","wb");
+    FILE *fp1 = fopen("ARecord.txt","rb");
+    FILE *fp2 = fopen("backup.txt","wb");
     char buf[1024];
     int n;
 
